@@ -1,52 +1,45 @@
-using System.Security.Cryptography;
-using System.Text;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKiTucXa.API.Data;
+using QuanLyKiTucXa.API.DTOs;
 using QuanLyKiTucXa.API.Models;
 
 namespace QuanLyKiTucXa.API.Services;
-
-public class LoginRequest
-{
-    public string Username { get; set; } = null!;
-    public string Password { get; set; } = null!;
-}
-
-public class LoginResponse
-{
-    public User User { get; set; } = null!;
-    public string AccessToken { get; set; } = null!;
-    public string RefreshToken { get; set; } = null!;
-}
 
 public class AuthService
 {
     private readonly ApplicationDbContext _context;
     private readonly ITokenService _tokenService;
+    private readonly IMapper _mapper;
 
-    public AuthService(ApplicationDbContext context, ITokenService tokenService)
+    public AuthService(ApplicationDbContext context, ITokenService tokenService, IMapper mapper)
     {
         _context = context;
         _tokenService = tokenService;
+        _mapper = mapper;
     }
 
-    public async Task<LoginResponse?> LoginAsync(LoginRequest request)
+    public async Task<LoginResponseDto?> LoginAsync(string username, string password)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
 
-        if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
+        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+        {
+            return null;
+        }
+
+        if (!user.IsActive)
         {
             return null;
         }
 
         var accessToken = _tokenService.GenerateAccessToken(user);
-        var refreshToken = _tokenService.GenerateRefreshToken();
 
-        return new LoginResponse
+        var userDto = _mapper.Map<UserDto>(user);
+        return new LoginResponseDto
         {
-            User = user,
-            AccessToken = accessToken,
-            RefreshToken = refreshToken
+            User = userDto,
+            Token = accessToken
         };
     }
 
@@ -62,7 +55,7 @@ public class AuthService
         {
             Username = username,
             Email = email,
-            PasswordHash = HashPassword(password),
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
             FullName = fullName,
             Role = role,
             IsActive = true,
@@ -73,20 +66,5 @@ public class AuthService
         await _context.SaveChangesAsync();
 
         return user;
-    }
-
-    private string HashPassword(string password)
-    {
-        using (var sha256 = SHA256.Create())
-        {
-            var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(hashBytes);
-        }
-    }
-
-    private bool VerifyPassword(string password, string hash)
-    {
-        var hashOfInput = HashPassword(password);
-        return hashOfInput == hash;
     }
 }
