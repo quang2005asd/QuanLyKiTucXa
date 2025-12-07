@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EHM9nC4jr/c=",
+  "dgSpecHash": "MD/dXcf1x3A=",
   "success": true,
-  "projectFilePath": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa-1\\Backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj",
+  "projectFilePath": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa-1\\backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\quang\\.nuget\\packages\\aspnetcoreratelimit\\5.0.0\\aspnetcoreratelimit.5.0.0.nupkg.sha512",
     "C:\\Users\\quang\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",

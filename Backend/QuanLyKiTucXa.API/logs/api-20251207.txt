@@ -53,3 +53,13 @@
 2025-12-07 20:33:20.675 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - null null
 2025-12-07 20:33:20.714 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 38.8605ms
 2025-12-07 20:33:32.382 +07:00 [INF] Application is shutting down...
+2025-12-07 21:01:02.931 +07:00 [INF] User profile is available. Using 'C:\Users\quang\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-07 21:01:03.041 +07:00 [INF] Now listening on: http://localhost:5263
+2025-12-07 21:01:03.044 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-07 21:01:03.045 +07:00 [INF] Hosting environment: Development
+2025-12-07 21:01:03.046 +07:00 [INF] Content root path: C:\Users\quang\OneDrive\Desktop\Du_an_lon\QuanLyKiTucXa-1\backend\QuanLyKiTucXa.API
+2025-12-07 21:01:08.484 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/index.html - null null
+2025-12-07 21:01:08.863 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/index.html - 200 null text/html;charset=utf-8 381.3013ms
+2025-12-07 21:01:09.349 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - null null
+2025-12-07 21:01:09.645 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 296.3789ms
+2025-12-07 21:06:27.341 +07:00 [INF] Application is shutting down...
