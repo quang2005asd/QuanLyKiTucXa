@@ -57,9 +57,6 @@ builder.Services.AddScoped<AuthService>();
 // Configure authorization policies
 builder.Services.ConfigureAuthorizationPolicies();
 
-// Add security services - Rate limiting
-builder.Services.ConfigureRateLimit();
-
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -81,7 +78,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 // Add security middleware
 app.UseInputSanitization();
-app.UseRateLimit();
 
 // Add exception handling middleware
 app.UseExceptionHandlingMiddleware();
