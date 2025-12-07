@@ -1,86 +1,116 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKiTucXa.API.Data;
+using QuanLyKiTucXa.API.DTOs;
+using QuanLyKiTucXa.API.Infrastructure;
 using QuanLyKiTucXa.API.Models;
 
 namespace QuanLyKiTucXa.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class BuildingsController : ControllerBase
+public class BuildingsController : BaseController
 {
     private readonly ApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
-    public BuildingsController(ApplicationDbContext context)
+    public BuildingsController(ApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Building>>> GetBuildings()
+    [Authorize(Policy = "StaffOrAbove")]
+    public async Task<ActionResult<PaginatedResponseDto<BuildingDto>>> GetBuildings(int pageNumber = 1, int pageSize = 10)
     {
-        return await _context.Buildings.Include(b => b.Floors).ToListAsync();
+        if (pageNumber < 1 || pageSize < 1)
+            return BadPaginatedRequestResponse<BuildingDto>("Page number and page size must be greater than 0");
+
+        var totalCount = await _context.Buildings.CountAsync();
+        var buildings = await _context.Buildings
+            .Include(b => b.Floors)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        var buildingDtos = _mapper.Map<List<BuildingDto>>(buildings);
+        return OkPaginatedResponse(buildingDtos, totalCount, pageNumber, pageSize);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Building>> GetBuilding(int id)
+    public async Task<ActionResult<ApiResponseDto<BuildingDto>>> GetBuilding(int id)
     {
         var building = await _context.Buildings.Include(b => b.Floors).FirstOrDefaultAsync(b => b.Id == id);
         if (building == null)
-        {
-            return NotFound();
-        }
-        return building;
+            return NotFoundResponse<BuildingDto>("Building not found");
+
+        var buildingDto = _mapper.Map<BuildingDto>(building);
+        return OkResponse(buildingDto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Building>> PostBuilding(Building building)
+    [Authorize(Policy = "ManagerOrAdmin")]
+    public async Task<ActionResult<ApiResponseDto<BuildingDto>>> PostBuilding(CreateBuildingDto createBuildingDto)
     {
+        var validationError = ValidateModelState<BuildingDto>();
+        if (validationError != null)
+            return validationError;
+
+        var building = _mapper.Map<Building>(createBuildingDto);
         _context.Buildings.Add(building);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetBuilding", new { id = building.Id }, building);
+        var buildingDto = _mapper.Map<BuildingDto>(building);
+        return CreatedResponse("GetBuilding", new { id = building.Id }, buildingDto);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutBuilding(int id, Building building)
+    [Authorize(Policy = "ManagerOrAdmin")]
+    public async Task<ActionResult<ApiResponseDto<BuildingDto>>> PutBuilding(int id, UpdateBuildingDto updateBuildingDto)
     {
-        if (id != building.Id)
-        {
-            return BadRequest();
-        }
+        var validationError = ValidateModelState<BuildingDto>();
+        if (validationError != null)
+            return validationError;
 
-        _context.Entry(building).State = EntityState.Modified;
+        var building = await _context.Buildings.FindAsync(id);
+        if (building == null)
+            return NotFoundResponse<BuildingDto>("Building not found");
+
+        _mapper.Map(updateBuildingDto, building);
+        building.UpdatedAt = DateTime.UtcNow;
 
         try
         {
+            _context.Buildings.Update(building);
             await _context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
             if (!BuildingExists(id))
-            {
-                return NotFound();
-            }
+                return NotFoundResponse<BuildingDto>("Building not found");
             throw;
         }
 
-        return NoContent();
+        var buildingDto = _mapper.Map<BuildingDto>(building);
+        return OkResponse(buildingDto, "Building updated successfully");
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteBuilding(int id)
+    [Authorize(Policy = "AdminOnly")]
+    public async Task<ActionResult<ApiResponseDto<object>>> DeleteBuilding(int id)
     {
         var building = await _context.Buildings.FindAsync(id);
         if (building == null)
-        {
-            return NotFound();
-        }
+            return NotFoundResponse<object>("Building not found");
 
-        _context.Buildings.Remove(building);
+        // Soft delete
+        building.IsDeleted = true;
+        building.DeletedAt = DateTime.UtcNow;
+        _context.Buildings.Update(building);
         await _context.SaveChangesAsync();
 
-        return NoContent();
+        return OkResponse<object>(new { }, "Building deleted successfully");
     }
 
     private bool BuildingExists(int id)

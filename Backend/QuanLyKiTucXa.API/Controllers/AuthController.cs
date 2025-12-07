@@ -1,59 +1,58 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QuanLyKiTucXa.API.Models;
+using QuanLyKiTucXa.API.DTOs;
+using QuanLyKiTucXa.API.Infrastructure;
 using QuanLyKiTucXa.API.Services;
 
 namespace QuanLyKiTucXa.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController : BaseController
 {
     private readonly AuthService _authService;
+    private readonly IMapper _mapper;
 
-    public AuthController(AuthService authService)
+    public AuthController(AuthService authService, IMapper mapper)
     {
         _authService = authService;
+        _mapper = mapper;
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest request)
+    public async Task<ActionResult<ApiResponseDto<LoginResponseDto>>> Login([FromBody] LoginDto loginDto)
     {
-        var result = await _authService.LoginAsync(request);
+        var validationError = ValidateModelState<LoginResponseDto>();
+        if (validationError != null)
+            return validationError;
+
+        var result = await _authService.LoginAsync(loginDto.Username, loginDto.Password);
 
         if (result == null)
-        {
-            return Unauthorized("Invalid credentials");
-        }
+            return BadRequestResponse<LoginResponseDto>("Invalid credentials");
 
-        return Ok(result);
+        return OkResponse(result, "Login successful");
     }
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<ActionResult<User>> Register([FromBody] RegisterRequest request)
+    public async Task<ActionResult<ApiResponseDto<UserDto>>> Register([FromBody] CreateUserDto createUserDto)
     {
+        var validationError = ValidateModelState<UserDto>();
+        if (validationError != null)
+            return validationError;
+
         var user = await _authService.RegisterAsync(
-            request.Username,
-            request.Email,
-            request.Password,
-            request.FullName,
-            "User");
+            createUserDto.Username,
+            createUserDto.Email,
+            createUserDto.Password,
+            createUserDto.FullName,
+            createUserDto.Role);
 
         if (user == null)
-        {
-            return BadRequest("User already exists or invalid data");
-        }
+            return BadRequestResponse<UserDto>("User already exists or invalid data");
 
-        return Ok(user);
+        var userDto = _mapper.Map<UserDto>(user);
+        return OkResponse(userDto, "Registration successful");
     }
-}
-
-public class RegisterRequest
-{
-    public string Username { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
-    public string FullName { get; set; } = null!;
 }

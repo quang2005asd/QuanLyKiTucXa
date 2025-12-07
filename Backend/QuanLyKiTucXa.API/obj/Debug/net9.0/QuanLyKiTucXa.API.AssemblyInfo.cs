@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuanLyKiTucXa.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8af1ce5c777c31d4a6a3086f99cbc74b34a2008f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d9677185c2d9ce54a74a8bc94e71925de3d0e50")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuanLyKiTucXa.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuanLyKiTucXa.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

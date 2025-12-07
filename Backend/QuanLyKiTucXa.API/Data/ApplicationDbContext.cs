@@ -142,5 +142,27 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Invoice>()
             .Property(i => i.TotalAmount)
             .HasPrecision(18, 2);
-}
+
+        // Global Query Filters for Soft Delete
+        modelBuilder.Entity<User>()
+            .HasQueryFilter(u => !u.IsDeleted);
+
+        modelBuilder.Entity<Building>()
+            .HasQueryFilter(b => !b.IsDeleted);
+
+        modelBuilder.Entity<Floor>()
+            .HasQueryFilter(f => !f.IsDeleted);
+
+        modelBuilder.Entity<Room>()
+            .HasQueryFilter(r => !r.IsDeleted);
+
+        modelBuilder.Entity<Student>()
+            .HasQueryFilter(s => !s.IsDeleted);
+
+        modelBuilder.Entity<Contract>()
+            .HasQueryFilter(c => !c.IsDeleted);
+
+        modelBuilder.Entity<Invoice>()
+            .HasQueryFilter(i => !i.IsDeleted);
+    }
 }
