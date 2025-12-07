@@ -19,7 +19,7 @@ export default function DashboardPage() {
     const loadDashboardData = async () => {
       try {
         setIsLoading(true)
-        const [students, rooms, buildings, contracts] = await Promise.all([
+        const [studentsRes, roomsRes, buildingsRes, contractsRes] = await Promise.all([
           studentApi.getAll(1, 1000),
           roomApi.getAll(1, 1000),
           buildingApi.getAll(1, 1000),
@@ -27,13 +27,13 @@ export default function DashboardPage() {
         ])
 
         setStats({
-          totalStudents: students.data.data?.length || 0,
-          totalRooms: rooms.data.data?.length || 0,
-          totalBuildings: buildings.data.data?.length || 0,
+          totalStudents: studentsRes.data.pagination?.totalCount || 0,
+          totalRooms: roomsRes.data.pagination?.totalCount || 0,
+          totalBuildings: buildingsRes.data.pagination?.totalCount || 0,
           revenue: 0, // Calculate from invoices if needed
         })
 
-        setRecentContracts(contracts.data.data?.slice(0, 5) || [])
+        setRecentContracts(contractsRes.data.data || [])
       } catch (error) {
         console.error('Error loading dashboard data:', error)
       } finally {

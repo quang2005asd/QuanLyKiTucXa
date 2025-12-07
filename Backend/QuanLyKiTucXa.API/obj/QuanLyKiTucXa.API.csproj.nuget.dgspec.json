@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa-1\\backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj": {}
+    "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa\\Backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa-1\\backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj": {
+    "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa\\Backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa-1\\backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj",
+        "projectUniqueName": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa\\Backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj",
         "projectName": "QuanLyKiTucXa.API",
-        "projectPath": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa-1\\backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj",
+        "projectPath": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa\\Backend\\QuanLyKiTucXa.API\\QuanLyKiTucXa.API.csproj",
         "packagesPath": "C:\\Users\\quang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa-1\\backend\\QuanLyKiTucXa.API\\obj\\",
+        "outputPath": "C:\\Users\\quang\\OneDrive\\Desktop\\Du_an_lon\\QuanLyKiTucXa\\Backend\\QuanLyKiTucXa.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\quang\\AppData\\Roaming\\NuGet\\NuGet.Config"

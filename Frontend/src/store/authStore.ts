@@ -36,10 +36,11 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null })
         try {
           const response = await authApi.login(username, password)
-          const { data, token } = response.data.data
+          const loginResponse = response.data.data
+          const { user, token } = loginResponse
           
           set({
-            user: data,
+            user: user,
             token: token,
             isLoading: false,
           })

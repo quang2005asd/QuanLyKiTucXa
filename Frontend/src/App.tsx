@@ -1,5 +1,6 @@
-import { BrowserRouter, Navigate, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react'
 import { Header, Sidebar } from './components'
 import { useAuthStore } from './store/authStore'
 import LoginPage from './pages/LoginPage'
@@ -11,8 +12,13 @@ import ContractsPage from './pages/ContractsPage'
 import InvoicesPage from './pages/InvoicesPage'
 
 function App() {
+  console.log('App component rendering')
   const { t } = useTranslation()
   const { user } = useAuthStore()
+  
+  useEffect(() => {
+    console.log('App mounted, user:', user)
+  }, [])
 
   return (
     <BrowserRouter>

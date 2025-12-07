@@ -1,49 +1,73 @@
 import { useTranslation } from 'react-i18next'
-import { Button, Card, Input, Modal, Table } from '../components'
+import { Button, Card, Input, Modal, Table, Alert } from '../components'
 import { Plus, Edit2, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { studentApi } from '../lib/api'
+import { useCrud } from '../hooks/useCrud'
+
+interface StudentForm {
+  fullName: string
+  email: string
+  phoneNumber: string
+  studentCode: string
+}
 
 export default function StudentsPage() {
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [students, setStudents] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [pageNumber, setPageNumber] = useState(1)
-  const [formData, setFormData] = useState({ fullName: '', email: '', phoneNumber: '', studentId: '' })
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [formData, setFormData] = useState<StudentForm>({
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    studentCode: '',
+  })
+  
+  const crud = useCrud(studentApi, 10)
 
   useEffect(() => {
-    loadStudents()
-  }, [pageNumber])
+    crud.loadData(1, 10)
+  }, [])
 
-  const loadStudents = async () => {
-    try {
-      setIsLoading(true)
-      const response = await studentApi.getAll(pageNumber, 10)
-      setStudents(response.data.data || [])
-    } catch (error) {
-      console.error('Error loading students:', error)
-    } finally {
-      setIsLoading(false)
+  const handleOpenModal = (student?: any) => {
+    if (student) {
+      setEditingId(student.id)
+      setFormData({
+        fullName: student.fullName,
+        email: student.email,
+        phoneNumber: student.phoneNumber,
+        studentCode: student.studentCode,
+      })
+    } else {
+      setEditingId(null)
+      setFormData({ fullName: '', email: '', phoneNumber: '', studentCode: '' })
     }
+    setIsModalOpen(true)
   }
 
-  const handleAddStudent = async () => {
+  const handleSaveStudent = async () => {
+    if (!formData.fullName || !formData.email || !formData.studentCode) {
+      alert('Vui lòng điền đầy đủ thông tin')
+      return
+    }
+
     try {
-      await studentApi.create(formData)
-      setFormData({ fullName: '', email: '', phoneNumber: '', studentId: '' })
+      if (editingId) {
+        await crud.update(editingId, formData)
+      } else {
+        await crud.create(formData)
+      }
       setIsModalOpen(false)
-      loadStudents()
+      setFormData({ fullName: '', email: '', phoneNumber: '', studentCode: '' })
     } catch (error) {
-      console.error('Error adding student:', error)
+      console.error('Error saving student:', error)
     }
   }
 
   const handleDeleteStudent = async (id: string) => {
     if (window.confirm('Bạn chắc chắn muốn xóa sinh viên này?')) {
       try {
-        await studentApi.delete(id)
-        loadStudents()
+        await crud.delete(id)
       } catch (error) {
         console.error('Error deleting student:', error)
       }
@@ -61,49 +85,43 @@ export default function StudentsPage() {
         <Button
           variant="primary"
           className="gap-2"
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => handleOpenModal()}
         >
           <Plus className="w-4 h-4" />
           {t('students.addStudent')}
         </Button>
       </div>
 
-      {/* Filters */}
-      <Card>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Input placeholder={t('common.search')} />
-          <Input placeholder="Trạng thái" />
-          <div />
-        </div>
-      </Card>
+      {/* Error Alert */}
+      {crud.error && (
+        <Alert type="error" className="mb-4">
+          {crud.error}
+          <button
+            onClick={crud.clearError}
+            className="ml-2 font-semibold hover:underline"
+          >
+            ✕
+          </button>
+        </Alert>
+      )}
 
       {/* Table */}
       <Card>
         <Table
           columns={[
+            { key: 'studentCode', label: 'Mã SV' },
             { key: 'fullName', label: t('students.fullName') },
             { key: 'email', label: t('students.email') },
             { key: 'phoneNumber', label: t('students.phoneNumber') },
-            { key: 'studentId', label: t('students.studentId') },
-            {
-              key: 'status',
-              label: t('common.status'),
-              render: (value) => (
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  value === 'Active'
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200'
-                    : 'bg-secondary-100 text-secondary-800 dark:bg-secondary-700 dark:text-secondary-200'
-                }`}>
-                  {value === 'Active' ? 'Hoạt động' : 'Không hoạt động'}
-                </span>
-              ),
-            },
             {
               key: 'actions',
               label: t('common.actions'),
               render: (_, row) => (
                 <div className="flex gap-2">
-                  <button className="text-primary-600 hover:text-primary-700">
+                  <button
+                    onClick={() => handleOpenModal(row)}
+                    className="text-primary-600 hover:text-primary-700"
+                  >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
@@ -116,8 +134,8 @@ export default function StudentsPage() {
               ),
             },
           ]}
-          data={students}
-          isLoading={isLoading}
+          data={crud.data}
+          isLoading={crud.isLoading}
         />
       </Card>
 
@@ -125,19 +143,25 @@ export default function StudentsPage() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={t('students.addStudent')}
+        title={editingId ? 'Chỉnh sửa sinh viên' : t('students.addStudent')}
         actions={
           <>
             <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
               {t('common.cancel')}
             </Button>
-            <Button variant="primary" onClick={handleAddStudent}>
+            <Button variant="primary" onClick={handleSaveStudent}>
               {t('common.save')}
             </Button>
           </>
         }
       >
         <div className="space-y-4">
+          <Input
+            label="Mã Sinh Viên *"
+            value={formData.studentCode}
+            onChange={(e) => setFormData({ ...formData, studentCode: e.target.value })}
+            disabled={!!editingId}
+          />
           <Input
             label={t('students.fullName')}
             value={formData.fullName}
@@ -153,11 +177,6 @@ export default function StudentsPage() {
             label={t('students.phoneNumber')}
             value={formData.phoneNumber}
             onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-          />
-          <Input
-            label={t('students.studentId')}
-            value={formData.studentId}
-            onChange={(e) => setFormData({ ...formData, studentId: e.target.value })}
           />
         </div>
       </Modal>

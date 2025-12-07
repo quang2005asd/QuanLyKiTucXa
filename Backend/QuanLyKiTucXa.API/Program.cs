@@ -75,6 +75,32 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Seed default admin user
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated();
+    
+    // Check if admin user already exists
+    if (!context.Users.Any(u => u.Username == "admin"))
+    {
+        var adminPasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123");
+        var adminUser = new QuanLyKiTucXa.API.Models.User
+        {
+            Username = "admin",
+            Email = "admin@ktxa.com",
+            FullName = "Administrator",
+            PasswordHash = adminPasswordHash,
+            Role = "Admin",
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
+        };
+        
+        context.Users.Add(adminUser);
+        context.SaveChanges();
+    }
+}
+
 // Configure the HTTP request pipeline.
 // Add security middleware
 app.UseInputSanitization();
