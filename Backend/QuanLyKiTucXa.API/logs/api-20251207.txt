@@ -1,0 +1,65 @@
+2025-12-07 20:32:37.575 +07:00 [INF] User profile is available. Using 'C:\Users\quang\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-07 20:32:37.695 +07:00 [INF] Now listening on: http://localhost:5263
+2025-12-07 20:32:37.698 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-07 20:32:37.700 +07:00 [INF] Hosting environment: Development
+2025-12-07 20:32:37.700 +07:00 [INF] Content root path: C:\Users\quang\OneDrive\Desktop\Du_an_lon\QuanLyKiTucXa-1\Backend\QuanLyKiTucXa.API
+2025-12-07 20:32:42.522 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/ - null null
+2025-12-07 20:32:42.576 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/ - 301 0 null 55.6405ms
+2025-12-07 20:32:42.606 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/index.html - null null
+2025-12-07 20:32:42.706 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/index.html - 200 null text/html;charset=utf-8 100.3708ms
+2025-12-07 20:32:42.731 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger-ui.css - null null
+2025-12-07 20:32:42.735 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger-ui-standalone-preset.js - null null
+2025-12-07 20:32:42.735 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger-ui-bundle.js - null null
+2025-12-07 20:32:42.769 +07:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-12-07 20:32:42.769 +07:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-12-07 20:32:42.774 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger-ui.css - 200 143212 text/css 42.4267ms
+2025-12-07 20:32:42.774 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger-ui-standalone-preset.js - 200 332952 text/javascript 38.7747ms
+2025-12-07 20:32:42.813 +07:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-12-07 20:32:42.815 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger-ui-bundle.js - 200 1061588 text/javascript 80.113ms
+2025-12-07 20:32:43.735 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/favicon-32x32.png - null null
+2025-12-07 20:32:43.744 +07:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-12-07 20:32:43.746 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/favicon-32x32.png - 200 628 image/png 10.3874ms
+2025-12-07 20:32:43.903 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - null null
+2025-12-07 20:32:44.049 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 145.7858ms
+2025-12-07 20:32:50.923 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/?id=e3e01a3d-2936-4488-a633-1c31b240964c&vscodeBrowserReqId=1765114370912 - null null
+2025-12-07 20:32:50.928 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/?id=e3e01a3d-2936-4488-a633-1c31b240964c&vscodeBrowserReqId=1765114370912 - 301 0 null 5.7649ms
+2025-12-07 20:32:50.935 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/index.html - null null
+2025-12-07 20:32:50.939 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/index.html - 200 null text/html;charset=utf-8 4.6474ms
+2025-12-07 20:32:50.996 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger-ui.css - null null
+2025-12-07 20:32:50.996 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger-ui-bundle.js - null null
+2025-12-07 20:32:50.996 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger-ui-standalone-preset.js - null null
+2025-12-07 20:32:51.004 +07:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-12-07 20:32:51.009 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger-ui.css - 200 143212 text/css 13.172ms
+2025-12-07 20:32:51.016 +07:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-12-07 20:32:51.019 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger-ui-standalone-preset.js - 200 332952 text/javascript 22.3423ms
+2025-12-07 20:32:51.035 +07:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-12-07 20:32:51.037 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger-ui-bundle.js - 200 1061588 text/javascript 40.2237ms
+2025-12-07 20:32:51.164 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - null null
+2025-12-07 20:32:51.182 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 18.5549ms
+2025-12-07 20:32:58.001 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - null null
+2025-12-07 20:32:58.072 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 71.3289ms
+2025-12-07 20:32:58.596 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/favicon.ico - null null
+2025-12-07 20:32:58.642 +07:00 [WRN] Failed to determine the https port for redirect.
+2025-12-07 20:32:58.804 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/favicon.ico - 404 0 null 207.3375ms
+2025-12-07 20:32:58.811 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5263/favicon.ico, Response status code: 404
+2025-12-07 20:33:04.020 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger - null null
+2025-12-07 20:33:04.036 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger - 404 0 null 16.1618ms
+2025-12-07 20:33:04.048 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5263/swagger, Response status code: 404
+2025-12-07 20:33:10.280 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/index.html - null null
+2025-12-07 20:33:10.293 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/index.html - 404 0 null 12.3104ms
+2025-12-07 20:33:10.303 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5263/swagger/index.html, Response status code: 404
+2025-12-07 20:33:20.050 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/index.html - null null
+2025-12-07 20:33:20.055 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/index.html - 200 null text/html;charset=utf-8 4.6761ms
+2025-12-07 20:33:20.675 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - null null
+2025-12-07 20:33:20.714 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 38.8605ms
+2025-12-07 20:33:32.382 +07:00 [INF] Application is shutting down...
+2025-12-07 21:01:02.931 +07:00 [INF] User profile is available. Using 'C:\Users\quang\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-07 21:01:03.041 +07:00 [INF] Now listening on: http://localhost:5263
+2025-12-07 21:01:03.044 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-07 21:01:03.045 +07:00 [INF] Hosting environment: Development
+2025-12-07 21:01:03.046 +07:00 [INF] Content root path: C:\Users\quang\OneDrive\Desktop\Du_an_lon\QuanLyKiTucXa-1\backend\QuanLyKiTucXa.API
+2025-12-07 21:01:08.484 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/index.html - null null
+2025-12-07 21:01:08.863 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/index.html - 200 null text/html;charset=utf-8 381.3013ms
+2025-12-07 21:01:09.349 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - null null
+2025-12-07 21:01:09.645 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5263/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 296.3789ms
+2025-12-07 21:06:27.341 +07:00 [INF] Application is shutting down...
