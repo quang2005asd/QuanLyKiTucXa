@@ -20,5 +20,5 @@ public class Student
     public bool IsDeleted { get; set; } = false;
 
     // Navigation property
-    public ICollection<Contract> Contracts { get; set; } = new List<Contract>();
+    public ICollection<ContractStudent> ContractStudents { get; set; } = new List<ContractStudent>();
 }

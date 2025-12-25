@@ -2,7 +2,7 @@ import { BarChart3, Users, Building2, FileText } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { Card, Stat, Table } from '../components'
-import { studentApi, roomApi, contractApi, invoiceApi, buildingApi } from '../lib/api'
+import { studentApi, roomApi, contractApi, buildingApi } from '../lib/api'
 
 export default function DashboardPage() {
   const { t } = useTranslation()
@@ -20,9 +20,9 @@ export default function DashboardPage() {
       try {
         setIsLoading(true)
         const [studentsRes, roomsRes, buildingsRes, contractsRes] = await Promise.all([
-          studentApi.getAll(1, 1000),
-          roomApi.getAll(1, 1000),
-          buildingApi.getAll(1, 1000),
+          studentApi.getAll(1, 1),
+          roomApi.getAll(1, 1),
+          buildingApi.getAll(1, 1),
           contractApi.getAll(1, 10),
         ])
 

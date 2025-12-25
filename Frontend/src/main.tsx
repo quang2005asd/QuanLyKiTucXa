@@ -13,12 +13,22 @@ if (!root) {
   console.error('Root element not found!')
 } else {
   console.log('Rendering app...')
+  // Remove StrictMode in production to avoid duplicate API calls
+  const isDev = import.meta.env.DEV
+  const AppWithErrorBoundary = (
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  )
+  
   ReactDOM.createRoot(root).render(
-    <React.StrictMode>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </React.StrictMode>,
+    isDev ? (
+      <React.StrictMode>
+        {AppWithErrorBoundary}
+      </React.StrictMode>
+    ) : (
+      AppWithErrorBoundary
+    )
   )
   console.log('App rendered')
 }

@@ -9,8 +9,9 @@ public class ContractDto
 {
     public int Id { get; set; }
     public string ContractNumber { get; set; } = null!;
-    public int StudentId { get; set; }
     public int RoomId { get; set; }
+    public string? RoomNumber { get; set; }
+    public List<StudentDto> Students { get; set; } = new List<StudentDto>();
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public decimal DepositAmount { get; set; }
@@ -29,9 +30,9 @@ public class CreateContractDto
     [StringLength(50, MinimumLength = 1, ErrorMessage = "Contract number must be between 1 and 50 characters")]
     public string ContractNumber { get; set; } = null!;
 
-    [Required(ErrorMessage = "Student ID is required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Student ID must be greater than 0")]
-    public int StudentId { get; set; }
+    [Required(ErrorMessage = "Student IDs are required")]
+    [MinLength(1, ErrorMessage = "At least one student is required")]
+    public List<int> StudentIds { get; set; } = new List<int>();
 
     [Required(ErrorMessage = "Room ID is required")]
     [Range(1, int.MaxValue, ErrorMessage = "Room ID must be greater than 0")]
@@ -57,6 +58,7 @@ public class CreateContractDto
 /// </summary>
 public class UpdateContractDto
 {
+    public List<int>? StudentIds { get; set; }
     public DateTime? EndDate { get; set; }
 
     [RegularExpression("^(Active|Completed|Cancelled|Pending)$", ErrorMessage = "Status must be Active, Completed, Cancelled, or Pending")]

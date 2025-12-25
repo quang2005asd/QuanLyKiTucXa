@@ -4,7 +4,6 @@ public class Contract
 {
     public int Id { get; set; }
     public string ContractNumber { get; set; } = null!;
-    public int StudentId { get; set; }
     public int RoomId { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
@@ -17,7 +16,7 @@ public class Contract
     public bool IsDeleted { get; set; } = false;
 
     // Navigation properties
-    public Student Student { get; set; } = null!;
     public Room Room { get; set; } = null!;
+    public ICollection<ContractStudent> ContractStudents { get; set; } = new List<ContractStudent>();
     public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }

@@ -17,7 +17,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.DeletedAt, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-            .ForMember(dest => dest.Contracts, opt => opt.Ignore());
+            .ForMember(dest => dest.ContractStudents, opt => opt.Ignore());
 
         CreateMap<UpdateStudentDto, Student>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -26,7 +26,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.DeletedAt, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-            .ForMember(dest => dest.Contracts, opt => opt.Ignore());
+            .ForMember(dest => dest.ContractStudents, opt => opt.Ignore());
 
         // Room mappings
         CreateMap<Room, RoomDto>().ReverseMap();
@@ -51,7 +51,10 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Contracts, opt => opt.Ignore());
 
         // Contract mappings
-        CreateMap<Contract, ContractDto>().ReverseMap();
+        CreateMap<Contract, ContractDto>()
+            .ForMember(dest => dest.RoomNumber, opt => opt.MapFrom(src => src.Room != null ? src.Room.RoomNumber : null))
+            .ForMember(dest => dest.Students, opt => opt.MapFrom(src => src.ContractStudents.Select(cs => cs.Student).ToList()));
+        
         CreateMap<CreateContractDto, Contract>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Active"))
@@ -59,14 +62,13 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.DeletedAt, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-            .ForMember(dest => dest.Student, opt => opt.Ignore())
+            .ForMember(dest => dest.ContractStudents, opt => opt.Ignore())
             .ForMember(dest => dest.Room, opt => opt.Ignore())
             .ForMember(dest => dest.Invoices, opt => opt.Ignore());
 
         CreateMap<UpdateContractDto, Contract>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.ContractNumber, opt => opt.Ignore())
-            .ForMember(dest => dest.StudentId, opt => opt.Ignore())
             .ForMember(dest => dest.RoomId, opt => opt.Ignore())
             .ForMember(dest => dest.StartDate, opt => opt.Ignore())
             .ForMember(dest => dest.DepositAmount, opt => opt.Ignore())
@@ -75,7 +77,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.DeletedAt, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-            .ForMember(dest => dest.Student, opt => opt.Ignore())
+            .ForMember(dest => dest.ContractStudents, opt => opt.Ignore())
             .ForMember(dest => dest.Room, opt => opt.Ignore())
             .ForMember(dest => dest.Invoices, opt => opt.Ignore());
 

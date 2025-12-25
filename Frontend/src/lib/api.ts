@@ -53,6 +53,10 @@ export const studentApi = {
 export const roomApi = {
   getAll: (pageNumber = 1, pageSize = 10) =>
     api.get('/api/rooms', { params: { pageNumber, pageSize } }),
+  getAvailableRooms: (pageNumber = 1, pageSize = 10) =>
+    api.get('/api/rooms/available', { params: { pageNumber, pageSize } }),
+  getRoomsByBuilding: (buildingId: number, pageNumber = 1, pageSize = 100) =>
+    api.get(`/api/rooms/building/${buildingId}`, { params: { pageNumber, pageSize } }),
   get: (id: string) => api.get(`/api/rooms/${id}`),
   create: (data: any) => api.post('/api/rooms', data),
   update: (id: string, data: any) => api.put(`/api/rooms/${id}`, data),
@@ -67,6 +71,16 @@ export const buildingApi = {
   create: (data: any) => api.post('/api/buildings', data),
   update: (id: string, data: any) => api.put(`/api/buildings/${id}`, data),
   delete: (id: string) => api.delete(`/api/buildings/${id}`),
+}
+
+// Floors APIs
+export const floorApi = {
+  getAll: (pageNumber = 1, pageSize = 10) =>
+    api.get('/api/floors', { params: { pageNumber, pageSize } }),
+  get: (id: string) => api.get(`/api/floors/${id}`),
+  create: (data: any) => api.post('/api/floors', data),
+  update: (id: string, data: any) => api.put(`/api/floors/${id}`, data),
+  delete: (id: string) => api.delete(`/api/floors/${id}`),
 }
 
 // Contracts APIs

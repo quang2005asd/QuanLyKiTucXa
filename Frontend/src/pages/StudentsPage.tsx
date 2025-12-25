@@ -27,6 +27,7 @@ export default function StudentsPage() {
 
   useEffect(() => {
     crud.loadData(1, 10)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleOpenModal = (student?: any) => {
