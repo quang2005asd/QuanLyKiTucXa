@@ -101,11 +101,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
-// Add security middleware
 app.UseInputSanitization();
-
-// Add exception handling middleware
 app.UseExceptionHandlingMiddleware();
 
 if (app.Environment.IsDevelopment())

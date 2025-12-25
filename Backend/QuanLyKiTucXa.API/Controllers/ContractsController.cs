@@ -27,7 +27,8 @@ public class ContractsController : BaseController
 
         var totalCount = await _context.Contracts.CountAsync();
         var contracts = await _context.Contracts
-            .Include(c => c.Student)
+            .Include(c => c.ContractStudents)
+                .ThenInclude(cs => cs.Student)
             .Include(c => c.Room)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -41,7 +42,8 @@ public class ContractsController : BaseController
     public async Task<ActionResult<ApiResponseDto<ContractDto>>> GetContract(int id)
     {
         var contract = await _context.Contracts
-            .Include(c => c.Student)
+            .Include(c => c.ContractStudents)
+                .ThenInclude(cs => cs.Student)
             .Include(c => c.Room)
             .FirstOrDefaultAsync(c => c.Id == id);
         if (contract == null)
@@ -63,12 +65,13 @@ public class ContractsController : BaseController
             return NotFoundPaginatedResponse<ContractDto>("Student not found");
 
         var totalCount = await _context.Contracts
-            .Where(c => c.StudentId == studentId)
+            .Where(c => c.ContractStudents.Any(cs => cs.StudentId == studentId))
             .CountAsync();
 
         var contracts = await _context.Contracts
-            .Where(c => c.StudentId == studentId)
-            .Include(c => c.Student)
+            .Where(c => c.ContractStudents.Any(cs => cs.StudentId == studentId))
+            .Include(c => c.ContractStudents)
+                .ThenInclude(cs => cs.Student)
             .Include(c => c.Room)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -95,7 +98,8 @@ public class ContractsController : BaseController
 
         var contracts = await _context.Contracts
             .Where(c => c.RoomId == roomId && c.Status == "Active")
-            .Include(c => c.Student)
+            .Include(c => c.ContractStudents)
+                .ThenInclude(cs => cs.Student)
             .Include(c => c.Room)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
@@ -112,10 +116,13 @@ public class ContractsController : BaseController
         if (validationError != null)
             return validationError;
 
-        // Check if student exists
-        var student = await _context.Students.FindAsync(createContractDto.StudentId);
-        if (student == null)
-            return BadRequestResponse<ContractDto>("Student not found");
+        // Check if all students exist
+        var students = await _context.Students
+            .Where(s => createContractDto.StudentIds.Contains(s.Id))
+            .ToListAsync();
+        
+        if (students.Count != createContractDto.StudentIds.Count)
+            return BadRequestResponse<ContractDto>("One or more students not found");
 
         // Check if room exists
         var room = await _context.Rooms.FindAsync(createContractDto.RoomId);
@@ -125,6 +132,10 @@ public class ContractsController : BaseController
         // Check if room is available
         if (room.Status != "Available")
             return BadRequestResponse<ContractDto>("Room is not available");
+
+        // Check if room has enough capacity
+        if (createContractDto.StudentIds.Count > room.Capacity)
+            return BadRequestResponse<ContractDto>($"Room capacity is {room.Capacity}, cannot add {createContractDto.StudentIds.Count} students");
 
         // Check if contract number already exists
         if (await _context.Contracts.AnyAsync(c => c.ContractNumber == createContractDto.ContractNumber))
@@ -137,12 +148,30 @@ public class ContractsController : BaseController
         var contract = _mapper.Map<Contract>(createContractDto);
         contract.CreatedAt = DateTime.UtcNow;
 
+        // Add students to contract
+        foreach (var studentId in createContractDto.StudentIds)
+        {
+            contract.ContractStudents.Add(new ContractStudent
+            {
+                StudentId = studentId,
+                JoinedAt = DateTime.UtcNow
+            });
+        }
+
         // Update Room status to Occupied
         room.Status = "Occupied";
 
         _context.Contracts.Add(contract);
         _context.Rooms.Update(room);
         await _context.SaveChangesAsync();
+
+        // Load relationships for response
+        await _context.Entry(contract)
+            .Collection(c => c.ContractStudents)
+            .Query()
+            .Include(cs => cs.Student)
+            .LoadAsync();
+        await _context.Entry(contract).Reference(c => c.Room).LoadAsync();
 
         var contractDto = _mapper.Map<ContractDto>(contract);
         return CreatedResponse("GetContract", new { id = contract.Id }, contractDto);

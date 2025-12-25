@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Room> Rooms { get; set; } = null!;
     public DbSet<Student> Students { get; set; } = null!;
     public DbSet<Contract> Contracts { get; set; } = null!;
+    public DbSet<ContractStudent> ContractStudents { get; set; } = null!;
     public DbSet<Invoice> Invoices { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -96,9 +97,9 @@ public class ApplicationDbContext : DbContext
             .IsUnique();
 
         modelBuilder.Entity<Student>()
-            .HasMany(s => s.Contracts)
-            .WithOne(c => c.Student)
-            .HasForeignKey(c => c.StudentId)
+            .HasMany(s => s.ContractStudents)
+            .WithOne(cs => cs.Student)
+            .HasForeignKey(cs => cs.StudentId)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Contract configuration
@@ -118,10 +119,20 @@ public class ApplicationDbContext : DbContext
             .HasPrecision(18, 2);
 
         modelBuilder.Entity<Contract>()
+            .HasMany(c => c.ContractStudents)
+            .WithOne(cs => cs.Contract)
+            .HasForeignKey(cs => cs.ContractId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Contract>()
             .HasMany(c => c.Invoices)
             .WithOne(i => i.Contract)
             .HasForeignKey(i => i.ContractId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // ContractStudent many-to-many configuration
+        modelBuilder.Entity<ContractStudent>()
+            .HasKey(cs => new { cs.ContractId, cs.StudentId });
 
         // Invoice configuration
         modelBuilder.Entity<Invoice>()
